@@ -13,13 +13,20 @@
         packageName = "CMakeTest";
       in
         {
-          packages.${packageName} = pkgs.stdenv.mkDerivation {
+          packages.${packageName} = pkgs.stdenv.mkDerivation rec {
             pname = packageName;
             version = "0.0.1";
             src = ./.;
+            fmt = pkgs.fetchFromGitHub {
+              owner = "fmtlib";
+              repo = "fmt";
+              rev = "64965bdc969deca4746022e6b9d0dcfc0037fa66";
+              sha256 = "sha256-mWziw1Yf3I2vNckb64IMdsVWrbXAwucxgq1nwlbJ/IE=";
+            };
             dontUseCmakeConfigure=true;
             nativeBuildInputs = dependencies;
             buildPhase = ''
+                         cp -r ${fmt} ./lib/fmt;
                          cmake . -B build -DUSE_LOCAL_PACKAGES=true;
                          cd build;
                          make
