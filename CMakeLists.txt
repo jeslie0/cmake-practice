@@ -1,16 +1,16 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.11)
 
-PROJECT(TEST)
+PROJECT(TEST LANGUAGES CXX)
 
-ADD_EXECUTABLE(${PROJECT_NAME} main.cpp)
+include(FetchContent)
 
-ADD_SUBDIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/Adder") # add subfolder
-ADD_SUBDIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/fmt")
+FetchContent_Declare(
+  nlohmann
+  GIT_REPOSITORY https://github.com/nlohmann/json.git
+  GIT_TAG a3e6e26dc83a726b292f5be0492fcc408663ce55
+  GIT_SHALLOW TRUE
+)
+FetchContent_MakeAvailable(nlohmann)
 
-target_include_directories(${PROJECT_NAME} PUBLIC Adder fmt) # don't need to
-# reference path in cpp file.
-
-# target_link_directories(${PROJECT_NAME} PRIVATE Adder) # Where to find library??
-
-
-target_link_libraries(${PROJECT_NAME} adder fmt) # link library
+ADD_SUBDIRECTORY(src)
+ADD_SUBDIRECTORY(lib) # add subfolder

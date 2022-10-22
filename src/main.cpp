@@ -1,8 +1,7 @@
 #include <iostream>
 #include <adder.h>
 #include <fmt/format.h>
-
-
+#include <nlohmann/json.hpp>
 
 int main(void) {
   std::cout << add(72.1f, 45.3f) << std::endl;
