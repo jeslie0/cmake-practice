@@ -9,7 +9,7 @@
       system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        dependencies = with pkgs; [ cmake  ]; # Input the build dependencies here
+        dependencies = with pkgs; [ cmake nlohmann_json ]; # Input the build dependencies here
         packageName = "CMakeTest";
       in
         {
@@ -19,9 +19,14 @@
             src = ./.;
             dontUseCmakeConfigure=true;
             nativeBuildInputs = dependencies;
-            buildPhase = "cmake . -B build; cd build; make";
+            buildPhase = ''
+                         cmake . -B build -DUSE_LOCAL_PACKAGES=true;
+                         cd build;
+                         make
+                         '';
             installPhase = ''
                          mkdir -p $out/bin
+                         cd src
                          cp TEST $out/bin
                          '';
           };
