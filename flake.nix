@@ -10,12 +10,13 @@
       let
         pkgs = nixpkgs.legacyPackages.${system};
         dependencies = with pkgs; [ cmake nlohmann_json ]; # Input the build dependencies here
-        packageName = "CMakeTest";
+        packageName = with builtins; head (match "^.*PROJECT\\(([^\ ]+).*$" (readFile ./CMakeLists.txt));
+        version' = with builtins; head (match "^.*PROJECT\\(${packageName}.*VERSION\ ([^\)]+).*$" (readFile ./CMakeLists.txt));
       in
         {
           packages.${packageName} = pkgs.stdenv.mkDerivation rec {
             pname = packageName;
-            version = "0.0.1";
+            version = version';
             src = ./.;
             fmt = pkgs.fetchFromGitHub {
               owner = "fmtlib";
@@ -34,7 +35,7 @@
             installPhase = ''
                          mkdir -p $out/bin
                          cd src
-                         cp TEST $out/bin
+                         cp ${packageName} $out/bin
                          '';
           };
 
