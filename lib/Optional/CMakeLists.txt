@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(adder LANGUAGES CXX VERSION 0.1.0)
+project(optional LANGUAGES CXX VERSION 0.1.0)
 
 add_library(${PROJECT_NAME} SHARED
   "${CMAKE_CURRENT_SOURCE_DIR}/adder.cpp" # library files
@@ -13,11 +13,13 @@ set(CPACK_DEBIAN_PACKAGE_MAINTAINER "James Leslie")
 
 install(TARGETS ${PROJECT_NAME}
   DESTINATION "bin"
-  COMPONENT CORE
+  COMPONENT ${PROJECT_NAME}
 )
 
 include(CPack)
 
-cpack_add_component(core
-  GROUP core_group
+cpack_add_component_group(${PROJECT_NAME})
+
+cpack_add_component(${PROJECT_NAME}
+  GROUP ${PROJECT_NAME}
 )

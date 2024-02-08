@@ -1,35 +1,18 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.11)
 
-PROJECT(core LANGUAGES CXX VERSION 0.0.1)
-SET(CMAKE_CXX_STANDARD 20)
+PROJECT(cmake-practice LANGUAGES CXX VERSION 0.0.1)
 
-ADD_EXECUTABLE(${PROJECT_NAME} src/main.cpp)
+add_subdirectory(main)
+add_subdirectory(lib)
 
-
-ADD_SUBDIRECTORY(lib)
-
-# CPACK stuff
 set(CPACK_DEB_COMPONENT_INSTALL ON)
 set(CPACK_GENERATOR "DEB")
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "James Leslie")
-
 set(CPACK_DEB_COMPONENTS_GROUPING ONE_PER_GROUP)
-
-
-install(TARGETS ${PROJECT_NAME}
-  RUNTIME
-  DESTINATION "bin"
-  COMPONENT CORE
-)
 
 include(CPack)
 
 cpack_add_component_group(core_group)
-
-cpack_add_component(core
-  GROUP core_group
-)
-
 
 
 message("components: ${CPACK_COMPONENTS_ALL}")
