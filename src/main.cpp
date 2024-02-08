@@ -1,13 +1,28 @@
 #include <iostream>
-#include <adder.h>
 #include <fmt/format.h>
-#include <nlohmann/json.hpp>
+#include <ranges>
+#include <array>
+#include <vector>
+
 
 int main(void) {
-  std::cout << add(72.1f, 45.3f) << std::endl;
-  std::cout << "Hello World!" << std::endl;
-  std::cout << fmt::format("{} says hello!", "James") << std::endl;
+  auto showValues =
+    [](auto& values, const std::string& message) {
+      std::cout << fmt::format("{}: ", message);
 
+      for (const auto& value : values) {
+        std::cout << fmt::format("{} ", value);
+      }
+
+      std::cout << "\n";
+    };
+
+
+  std::vector<int> v = {0,1,8,3,4,5,6,7,8,9};
+
+  auto vec = v | std::views::reverse | std::views::drop(2);
+
+  std::cout << *vec.begin() << std::endl;
 
   return 0;
-}
+};

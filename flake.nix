@@ -12,6 +12,7 @@
         dependencies = with pkgs; [ cmake nlohmann_json ]; # Input the build dependencies here
         packageName = with builtins; head (match "^.*PROJECT\\(([^\ ]+).*$" (readFile ./CMakeLists.txt));
         version' = with builtins; head (match "^.*PROJECT\\(${packageName}.*VERSION\ ([^\)]+).*$" (readFile ./CMakeLists.txt));
+
       in
         {
           packages.${packageName} = pkgs.stdenv.mkDerivation rec {
