@@ -48,6 +48,7 @@
             buildInputs = with pkgs;
               [ clang-tools
                 cmake
+                dpkg
               ];
           };
         }

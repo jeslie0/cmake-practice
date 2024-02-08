@@ -1,26 +1,35 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.11)
 
-PROJECT(TEST LANGUAGES CXX VERSION 0.0.1)
+PROJECT(core LANGUAGES CXX VERSION 0.0.1)
 SET(CMAKE_CXX_STANDARD 20)
 
-if(USE_LOCAL_PACKAGES)
-  find_package(nlohmann_json REQUIRED)
-else()
-  include(FetchContent)
+ADD_EXECUTABLE(${PROJECT_NAME} src/main.cpp)
 
-  FetchContent_Declare(
-    nlohmann
-    GIT_REPOSITORY https://github.com/nlohmann/json.git
-    GIT_TAG        a3e6e26dc83a726b292f5be0492fcc408663ce55
-    GIT_SHALLOW    TRUE)
-  FetchContent_MakeAvailable(nlohmann)
 
-  FetchContent_Declare(
-    fmt
-    GIT_REPOSITORY https://github.com/fmtlib/fmt.git
-    GIT_TAG        64965bdc969deca4746022e6b9d0dcfc0037fa66)
-  FetchContent_MakeAvailable(fmt)
-endif(USE_LOCAL_PACKAGES)
+ADD_SUBDIRECTORY(lib)
 
-ADD_SUBDIRECTORY(src)
-ADD_SUBDIRECTORY(lib) # add subfolder
+# CPACK stuff
+set(CPACK_DEB_COMPONENT_INSTALL ON)
+set(CPACK_GENERATOR "DEB")
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "James Leslie")
+
+set(CPACK_DEB_COMPONENTS_GROUPING ONE_PER_GROUP)
+
+
+install(TARGETS ${PROJECT_NAME}
+  RUNTIME
+  DESTINATION "bin"
+  COMPONENT CORE
+)
+
+include(CPack)
+
+cpack_add_component_group(core_group)
+
+cpack_add_component(core
+  GROUP core_group
+)
+
+
+
+message("components: ${CPACK_COMPONENTS_ALL}")
